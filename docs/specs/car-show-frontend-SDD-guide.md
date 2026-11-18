@@ -47,7 +47,7 @@ This guide turns the instructor's PDF into an **SDD workflow**: write down *what
 **Deliverables**
 - GitHub repo `car-show-registration-<surname1>-<surname2>` (backend + frontend; `main` has final working code). *Solo: confirm the exact repo name with your instructor; this guide uses `car-show-registration-<surname>` as a placeholder.*
 - ≥ **10 meaningful commits** under your own GitHub account
-- Work on branches, merged into `main` through **Pull Requests**
+- Develop on the existing `frontend/setup` branch and merge it into `main` through **one final Pull Request**
 - `frontend/README.md` explaining how to switch sample ↔ real API
 - Root `README.md` with your role and how to run the apps
 - 11 screenshots (12 files with 5a/5b) in `docs/screenshots/` **and** in one Google Doc
@@ -59,7 +59,7 @@ This guide turns the instructor's PDF into an **SDD workflow**: write down *what
 | Issue | Suggested handling |
 |---|---|
 | PDF is written for 2 people; you are solo | Tell the instructor; ask about the backend (template from LMS?) and whether PRs may be self-merged. |
-| PDF says PRs must be **reviewed by your partner** | You have no partner. Still open PRs for every branch; self-review them (read the diff and write a short description). Optionally ask a classmate or the instructor to review. |
+| PDF says PRs must be **reviewed by your partner** | You have no partner. Create only the final PR from `frontend/setup` to `main`, self-review the full diff and commit history, and confirm that self-review is acceptable. Optionally ask a classmate or the instructor to review. |
 | Doc name says `CarShow-Backend-Documentation-<Surname>` but the example says `CarShow-Frontend-Documentation-Reyes` | Use **`CarShow-Frontend-Documentation-<Surname>`** and confirm. |
 | Screenshot rules mention "POST", "8a/8b/8c", "9a/9b", "section 3G" | Backend leftovers. Label images clearly (e.g. *5a – Filter by Type*) and explain correctness against **section 3C of the PDF**. |
 | Instructor collaborator: `vhinle – vhinle@gmail.com` | Add this exact account as a collaborator and as Doc commenter. |
@@ -112,42 +112,35 @@ car-show-registration/
 
 # PHASE 1 — Setup (Repo, React app, Tailwind, env)
 
-### Step 1.1 — Create the repository yourself
+### Step 1.1 — Verify the repository setup
 
-Since there is no partner, you create the repo.
+The repository and initial Git history should already exist. If this step is complete, verify rather than recreating or overwriting it:
 
-1. Create the project folder and initialize Git (from wherever you keep projects):
+1. Confirm the repository layout includes `backend/`, `frontend/`, `docs/screenshots/`, `docs/specs/`, and a root `README.md`. The `backend/` folder is a placeholder until the API is connected.
+2. Verify Git and the remote are configured:
    ```bash
-   mkdir car-show-registration-<surname>
-   cd car-show-registration-<surname>
-   git init -b main
-   git config user.name  "Your Name"
-   git config user.email "your-github-email@example.com"
+   git status
+   git remote -v
+   git log --oneline
    ```
-2. Create the layout (the `backend/` folder is a placeholder until the API is connected):
-   ```bash
-   mkdir -p backend docs/screenshots docs/specs
-   echo "# Backend\n\nC# / .NET API will be added here soon." > backend/README.md
-   touch docs/screenshots/.gitkeep
-   ```
-3. Create a root `README.md` (see Step 1.9).
-4. On GitHub: **New repository** → name `car-show-registration-<surname>` (confirm naming) → **no** README/gitignore (the repo must be empty) → Create.
-5. Connect and push:
-   ```bash
-   git add .
-   git commit -m "Initial repository layout with backend placeholder and docs folders"
-   git remote add origin https://github.com/<your-username>/car-show-registration-<surname>.git
-   git push -u origin main
-   ```
-6. **Add the instructor:** GitHub repo → **Settings → Collaborators → Add people** → `vhinle` (vhinle@gmail.com). Keep the repo accessible to them.
+3. Keep the existing initial repository commit. Do not reinitialize the repository or create another initial commit.
+4. Confirm the GitHub repository name with your instructor if needed. Use `car-show-registration-<surname>` as a placeholder.
+5. **Add the instructor:** GitHub repo → **Settings → Collaborators → Add people** → `vhinle` (vhinle@gmail.com). Keep the repo accessible to them.
 
-### Step 1.2 — Create your branch
+### Step 1.2 — Verify the existing setup branch
+
+Your existing `frontend/setup` branch has already been created. Do not create another frontend branch.
 
 ```bash
-git checkout -b frontend/setup
+git branch --show-current
+git status
 ```
 
+The first command must show `frontend/setup`, and the second command must show the expected working-tree state. Preserve the branch and all existing commits. Work directly on `frontend/setup` for every remaining phase.
+
 ### Step 1.3 — Scaffold React with Vite (from the **repo root**)
+
+If the frontend is already scaffolded, verify it and skip recreating it. Do not remove or overwrite existing scaffold commits:
 
 ```bash
 npm create vite@latest frontend -- --template react
@@ -245,12 +238,12 @@ cd backend && dotnet run --project Api
 ```
 
 ### 🛑 CHECKPOINT 1 — Setup done
-- [ ] `npm run dev` shows a Tailwind-styled page
-- [ ] `node_modules/` and `dist/` are **not** tracked (`git status`)
+- [x] `npm run dev` shows a Tailwind-styled page
+- [x] `node_modules/` and `dist/` are **not** tracked (`git status`)
 - [ ] Instructor `vhinle` appears under repo **Settings → Collaborators**
-- [ ] **Commit:** `git add . && git commit -m "Scaffold React app with Vite and Tailwind"`
-- [ ] **Commit:** `git commit -am "Add README role table and .env.example"` (stage the new files first)
-- [ ] `git push -u origin frontend/setup`
+- [x] **Commit:** `git add . && git commit -m "Scaffold React app with Vite and Tailwind"`
+- [x] **Commit:** `git commit -am "Add README role table and .env.example"` (stage the new files first)
+- [x] `git push -u origin frontend/setup`
 - [ ] 📸 **DRAFT:** `frontend/src` folder tree (retake as final **Screenshot 1** at the end)
 
 ---
@@ -374,7 +367,8 @@ Paste the task list (T01–T16 below) as a checklist and tick it off as you go.
 ### 🛑 CHECKPOINT 2
 - [ ] Spec files committed: **Commit:** `Add SDD constitution, spec, plan and task list`
 - [ ] `git push`
-- [ ] Open **PR** `frontend/setup` → `main`, read your own diff, write a short description, merge (see Appendix B)
+- [ ] Stay on `frontend/setup`; do not create or merge another branch
+- [ ] Continue to Phase 3
 
 ---
 
@@ -390,18 +384,20 @@ Don't rename any API fields. Keep code simple and commented so I can explain it.
 When done, list which spec IDs (FR-xx) are satisfied and how I can test them.
 ```
 
-### Branch plan
+### Branch workflow
 
-| Branch | Tasks |
+Keep the existing `frontend/setup` branch as the only frontend development branch. Complete T01–T16 on this branch:
+
+| Work area | Tasks |
 |---|---|
-| `frontend/setup` | Phase 1–2 |
-| `frontend/sample-data-and-kpis` | T01–T04 |
-| `frontend/table-and-filters` | T05–T08 |
-| `frontend/paging-and-states` | T09–T12 |
-| `frontend/api-integration` | T13–T14 (later) |
-| `frontend/docs` | T15 |
+| Setup and specifications | Phase 1–2 |
+| Sample data and KPIs | T01–T04 |
+| Table and filters | T05–T08 |
+| Paging and states | T09–T12 |
+| API integration | T13–T14 (later) |
+| Documentation and final adjustments | T15–T16 |
 
-**Per branch:** push → open PR into `main` → self-review the diff (optionally ask a classmate/instructor) → merge → `git checkout main && git pull` → create the next branch.
+Commit each meaningful completed piece of work separately, push regularly, and do not open any intermediate Pull Request. The only Pull Request will be created after all planned frontend work is complete, from `frontend/setup` into `main`.
 
 ---
 
@@ -446,9 +442,9 @@ export async function getSummary() {
 
 ### 🛑 CHECKPOINT T01
 - [ ] Verify in the console: 25+ items, filters/paging math correct
-- [ ] `git checkout main && git pull && git checkout -b frontend/sample-data-and-kpis`
+- [ ] Verify `git branch --show-current` shows `frontend/setup`
 - [ ] **Commit:** `Add sample registration data and local API functions`
-- [ ] push
+- [ ] Push the existing branch
 
 ---
 
@@ -540,7 +536,7 @@ export default function useDebounce(value, delay = 400) {
 ### 🛑 CHECKPOINT T04
 - [ ] Numbers match what `getSummary()` returns
 - [ ] **Commit:** `Add KPI cards from summary data`
-- [ ] push; open **PR** `frontend/sample-data-and-kpis` → `main`, self-review, merge
+- [ ] Push `frontend/setup`
 - [ ] 📸 **DRAFT:** KPI row
 
 ---
@@ -554,7 +550,7 @@ export default function useDebounce(value, delay = 400) {
 - Always show text; keep contrast readable (e.g. `bg-red-100 text-red-800`); unknown value → neutral gray fallback
 
 ### 🛑 CHECKPOINT T05
-- [ ] `git checkout main && git pull && git checkout -b frontend/table-and-filters`
+- [ ] Verify `git branch --show-current` shows `frontend/setup`
 - [ ] **Commit:** `Add StatusBadge and PaymentBadge components`
 
 ---
@@ -638,7 +634,7 @@ export default function RegistrationsPage() {
 
 ### 🛑 CHECKPOINT T08
 - [ ] **Commit:** `Add participant name search and type/status filters`
-- [ ] push; open **PR** `frontend/table-and-filters` → `main`, self-review, merge
+- [ ] Push `frontend/setup`
 - [ ] 📸 **DRAFT:** search result, type filter, status filter
 
 ---
@@ -653,7 +649,7 @@ export default function RegistrationsPage() {
 - Page-size `<select>` (5, 10, 20) with label "Per page"
 
 ### 🛑 CHECKPOINT T09
-- [ ] `git checkout main && git pull && git checkout -b frontend/paging-and-states`
+- [ ] Verify `git branch --show-current` shows `frontend/setup`
 - [ ] **Commit:** `Add pagination and page-size selector`
 - [ ] push
 - [ ] 📸 **DRAFT:** page 2 with "Showing 11–20 of 25"
@@ -721,8 +717,8 @@ The UI is complete against sample data. The C# API will be connected soon.
 
 ### 🛑 CHECKPOINT T12
 - [ ] **Commit:** `Add frontend README and sample-data verification checklist`
-- [ ] push; open **PR** `frontend/paging-and-states` → `main`, self-review, merge
-- [ ] `main` now contains a complete, working sample-data dashboard (a safe fallback if the API is late)
+- [ ] Push `frontend/setup`
+- [ ] The branch now contains a complete, working sample-data dashboard (a safe fallback if the API is late)
 
 ---
 
@@ -734,9 +730,7 @@ Do this once a backend exists. Ways to get one (**ask your instructor**):
 
 ### T13 — Switch to the real API
 
-```bash
-git checkout main && git pull && git checkout -b frontend/api-integration
-```
+Remain on `frontend/setup`. Do not create a new branch.
 1. Add the C# project to `backend/` (replace the placeholder README) and commit it if it's yours to commit.
 2. Run it:
    ```bash
@@ -802,7 +796,7 @@ Update `docs/specs/04-verification.md`:
 
 ### 🛑 CHECKPOINT T14
 - [ ] **Commit:** `Verify dashboard against spec with real API`
-- [ ] push; open **PR** `frontend/api-integration` → `main`, self-review, merge
+- [ ] Push `frontend/setup`
 
 ---
 
@@ -832,7 +826,7 @@ For **each** screenshot, write in the Google Doc (3–5 sentences, your own word
 ### 🛑 CHECKPOINT Phase 5
 - [ ] All 12 files in `docs/screenshots/`
 - [ ] **Commit:** `Add final screenshots`
-- [ ] push (so the commit history screenshot #10 includes everything)
+- [ ] Push `frontend/setup` (so the commit history screenshot #10 includes the completed work)
 
 ---
 
@@ -868,13 +862,38 @@ For **each** screenshot, write in the Google Doc (3–5 sentences, your own word
 
 ## T16 — Final merge & submission
 
-1. All PRs merged; **`main` has the final working code**:
+1. Verify the final working frontend while still on `frontend/setup`:
    ```bash
-   git checkout main && git pull
-   cd frontend && npm install && npm run dev      # works?
+   git branch --show-current
+   git status
+   cd frontend
+   npm install
+   npm run dev
    ```
-2. On GitHub, verify: `vhinle` is a collaborator; no `node_modules/` or `dist/`; ≥ 10 commits under **your** account (`git shortlog -sn`)
-3. Submit the **Google Doc link** (and repo URL if asked) in the **CCDI LMS Submission Bin** before **Nov 25, 2026**
+2. Review progress before creating the final PR:
+   ```bash
+   git log --oneline
+   git shortlog -sn
+   git diff main...frontend/setup
+   ```
+3. Push the final state:
+   ```bash
+   git push
+   ```
+4. On GitHub, open one final Pull Request with base `main` and compare `frontend/setup`.
+5. Review the full commit history and Files changed tab, confirm the acceptance criteria are satisfied, and add a concise PR description containing the changed areas and relevant spec IDs.
+6. Because you are working alone, perform a self-review of your code and documentation. PDF-style partner review may not apply; confirm with the instructor whether this single-branch, self-reviewed PR is acceptable.
+7. Merge the final PR into `main`.
+8. After merging, verify `main` locally only to confirm the result:
+   ```bash
+   git checkout main
+   git pull
+   cd frontend
+   npm install
+   npm run dev
+   ```
+9. On GitHub, verify: `vhinle` is a collaborator; no `node_modules/` or `dist/` are tracked; the branch history contains ≥ 10 meaningful commits under **your** account (`git shortlog -sn`).
+10. Submit the **Google Doc link** (and repo URL if asked) in the **CCDI LMS Submission Bin** before **Nov 25, 2026**.
 
 ### 🛑 FINAL CHECKLIST
 
@@ -882,7 +901,8 @@ For **each** screenshot, write in the Google Doc (3–5 sentences, your own word
 - [ ] Repo named per instructor's instruction (placeholder: `car-show-registration-<surname>`)
 - [ ] Layout: `backend/`, `frontend/`, `docs/screenshots/`, root `README.md`
 - [ ] ≥ 10 meaningful commits under your own account
-- [ ] Branches merged into `main` via Pull Requests
+- [ ] All frontend work is completed on `frontend/setup`
+- [ ] One final Pull Request merged `frontend/setup` into `main`
 - [ ] No `node_modules/` or `dist/`
 - [ ] `.env.development` has `VITE_API_BASE_URL` (and `VITE_USE_SAMPLE_DATA`)
 - [ ] Root README has your role; `frontend/README.md` explains the sample ↔ API switch
@@ -907,6 +927,8 @@ For **each** screenshot, write in the Google Doc (3–5 sentences, your own word
 
 # Appendix A — Commit plan (≥ 10 required)
 
+The existing `frontend/setup` branch and its first commit are preserved. The following is a suggested commit checklist, not a requirement to repeat work already completed. All commits after the existing first commit should be made on `frontend/setup` with messages that accurately describe the actual changes. Do not split a small change merely to increase the commit count.
+
 | # | Message | After |
 |---|---|---|
 | 1 | Initial repository layout with backend placeholder and docs folders | Step 1.1 |
@@ -929,24 +951,29 @@ For **each** screenshot, write in the Google Doc (3–5 sentences, your own word
 | 18 | Verify dashboard against spec with real API | T14 ⏳ |
 | 19 | Add final screenshots | Phase 5 ⏳ |
 
-You'll already have 16 commits before the API step, so the ≥ 10 requirement is met even if the backend arrives late.
+If the existing first commit and the Phase 1–12 commits account for at least 10 meaningful commits, that is sufficient even if the API is not available. Add commits only for real, completed work.
 
 # Appendix B — Git cheat sheet & solo Pull Request flow
 
 ```bash
-git status
-git checkout -b frontend/<name>          # new branch
-git add .
-git commit -m "Message"
-git push -u origin frontend/<name>       # first push of a branch
-git push                                 # later pushes
-git checkout main && git pull            # sync after merging a PR
-git log --oneline --author="Your Name"   # your commits
-git shortlog -sn                         # commits per author
+git branch --show-current               # confirm frontend/setup is active
+git status                              # inspect modified and untracked files
+git add .                               # stage completed work
+git commit -m "Describe actual change" # create a meaningful commit
+git push -u origin frontend/setup       # push the existing branch for the first time
+git push                                # subsequent pushes
+git log --oneline                       # review commit history
+git shortlog -sn                        # count meaningful commits by author
+git diff main...frontend/setup          # review all branch changes against main
 ```
 
-**Solo PR flow:** GitHub → **Compare & pull request** → base `main` ← compare `frontend/<name>` → description (what changed + spec IDs) → open the **Files changed** tab and review your own diff → *(optional: ask a classmate/instructor to review)* → **Merge**.
-> The PDF expects a partner to review. Since you're solo, confirm with your instructor that self-reviewed PRs are acceptable.
+**One final solo PR flow:** GitHub → **Pull requests** → **New pull request** → base `main` ← compare `frontend/setup` → review the commit history and **Files changed** tab → add a description containing what changed and the relevant spec IDs → self-review the final result → merge only after all planned work passes verification.
+
+Use `git diff main...frontend/setup` before opening the PR to inspect the complete branch-level change. After merging, use `git checkout main && git pull` only to update your local `main` branch.
+
+Do not create another frontend branch and do not open intermediate Pull Requests. Regular pushes are remote backups and do not require a PR.
+
+> The PDF expects a partner to review. Since you are solo, confirm with your instructor whether a self-review of the one final PR is acceptable. Optionally ask a classmate or the instructor for a review, but do not create additional branches or PRs.
 
 # Appendix C — Quick debugging recipes
 
