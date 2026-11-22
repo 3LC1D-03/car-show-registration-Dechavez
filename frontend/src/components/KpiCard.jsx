@@ -16,7 +16,7 @@ export default function KpiCard({ label, value, icon, tone }) {
         <span aria-hidden="true" className="text-xl">{icon}</span>
         {label}
       </dt>
-      <dd className="mt-1 text-2xl font-bold text-slate-800">{value}</dd>
+      <dd className="mt-1 text-2xl font-bold tabular-nums text-slate-800">{value}</dd>
     </div>
   );
 }

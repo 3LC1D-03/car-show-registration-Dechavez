@@ -4,7 +4,7 @@ import { formatDate, formatPeso } from "../utils/formatters.js";
 
 export default function RegistrationTable({ items }) {
   return (
-    <div className="overflow-x-auto">
+    <div className="overflow-x-auto" role="region" aria-label="Registrations table" tabIndex={0}>
       <table className="min-w-full divide-y divide-slate-200 text-left text-sm">
         <caption className="sr-only">Car show registrations</caption>
         <thead className="bg-slate-50 text-xs uppercase tracking-wide text-slate-600">

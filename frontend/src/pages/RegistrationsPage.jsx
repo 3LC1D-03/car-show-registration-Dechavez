@@ -74,7 +74,7 @@ export default function RegistrationsPage() {
       <div className="mx-auto flex max-w-screen-2xl flex-col gap-6 px-4 py-6 sm:px-6">
         <h1 className="text-2xl font-bold">Car Show 2027 Registrations</h1>
         <KpiCards summary={currentSummary?.data} />
-        <div className="rounded-lg border border-slate-200 bg-white">
+        <div className="min-w-0 rounded-lg border border-slate-200 bg-white">
           <RegistrationFilters filters={filters} onChange={changeFilter} onClear={clearFilters} />
           {error ? (
             <div className="border-t border-slate-200 p-6">
