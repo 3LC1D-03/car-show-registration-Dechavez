@@ -2,137 +2,144 @@
 
 ## Phase 1 - Setup
 
-- [ ] Verify the existing repository and initial Git history.
-- [ ] Verify the active `frontend/setup` branch and preserve existing commits.
-- [ ] Add the backend placeholder and documentation folders.
-- [ ] Scaffold React with Vite.
-- [ ] Remove Vite demo content.
-- [ ] Install and configure Tailwind CSS.
-- [ ] Create environment files.
-- [ ] Verify `.gitignore`.
-- [ ] Create the source folder structure.
-- [ ] Create the root README.
-- [ ] Complete the setup checkpoint and push to `frontend/setup`.
+- [x] Verify the existing repository and initial Git history.
+- [x] Verify the active `frontend/setup` branch and preserve existing commits.
+- [x] Add the backend placeholder and documentation folders.
+- [x] Scaffold React with Vite.
+- [x] Replace the Vite demo page with the dashboard.
+- [x] Install and configure Tailwind CSS.
+- [x] Create environment files.
+- [x] Verify `.gitignore`.
+- [x] Create the source folder structure.
+- [x] Create the root README.
+- [x] Complete the setup checkpoint and push to `frontend/setup`.
 
 ## Phase 2 - SDD Documents
 
-- [ ] Create `00-constitution.md`.
-- [ ] Create `01-spec.md`.
-- [ ] Create `02-plan.md`.
-- [ ] Create this task list.
-- [ ] Commit and push the specification documents on `frontend/setup`.
+- [x] Create `00-constitution.md`.
+- [x] Create `01-spec.md`.
+- [x] Create `02-plan.md`.
+- [x] Create this task list.
+- [x] Commit and push the specification documents on `frontend/setup`.
 
 ## T01 - Sample Data
 
-- [ ] Create at least 25 registrations in `src/api/sample-data.js`.
-- [ ] Include the required fields and mixed types, statuses, and payment states.
-- [ ] Implement `getRegistrations(params)`.
-- [ ] Implement `getSummary()`.
-- [ ] Verify filtering and paging calculations.
+- [x] Create at least 25 registrations in `src/api/sample-data.js`.
+- [x] Include the required fields and mixed types, statuses, and payment states.
+- [x] Implement `getRegistrations(params)`.
+- [x] Implement `getSummary()`.
+- [x] Verify filtering and paging calculations.
 
 ## T02 - API Module and Data Switch
 
-- [ ] Implement `src/api/registrationsApi.js`.
-- [ ] Implement `src/api/index.js`.
-- [ ] Use `VITE_USE_SAMPLE_DATA` to switch data sources.
-- [ ] Keep one return shape across sample and real APIs.
+- [x] Implement `src/api/registrationsApi.js`.
+- [x] Implement `src/api/index.js`.
+- [x] Use `VITE_USE_SAMPLE_DATA` to switch data sources.
+- [x] Keep one return shape across sample and real APIs.
 
 ## T03 - Formatters and Debounce
 
-- [ ] Create `src/utils/formatters.js`.
-- [ ] Format pesos with Philippine currency.
-- [ ] Format dates consistently in Asia/Manila.
-- [ ] Create `src/hooks/useDebounce.js`.
+- [x] Create `src/utils/formatters.js`.
+- [x] Format pesos with Philippine currency.
+- [x] Format dates consistently in Asia/Manila.
+- [x] Create `src/hooks/useDebounce.js`.
 
 ## T04 - KPI Cards
 
-- [ ] Create `KpiCard.jsx`.
-- [ ] Create `KpiCards.jsx`.
-- [ ] Display required summary values.
-- [ ] Add optional cards where feasible.
-- [ ] Verify values come only from `getSummary()`.
+- [x] Create `KpiCard.jsx`.
+- [x] Create `KpiCards.jsx`.
+- [x] Display required summary values.
+- [x] Add optional cards where feasible.
+- [x] Verify values come only from `getSummary()`.
 
 ## T05 - Badges
 
-- [ ] Create `StatusBadge.jsx`.
-- [ ] Create `PaymentBadge.jsx`.
-- [ ] Use distinct colors and visible text labels.
-- [ ] Provide a neutral unknown-value fallback.
+- [x] Create `StatusBadge.jsx`.
+- [x] Create `PaymentBadge.jsx`.
+- [x] Use distinct colors and visible text labels.
+- [x] Provide a neutral unknown-value fallback.
 
 ## T06 - Registrations Table
 
-- [ ] Create `RegistrationTable.jsx`.
-- [ ] Display all required columns.
-- [ ] Format dates and amounts.
-- [ ] Enable horizontal scrolling and row hover.
+- [x] Create `RegistrationTable.jsx`.
+- [x] Display all required columns.
+- [x] Format dates and amounts.
+- [x] Enable horizontal scrolling and row hover.
 
 ## T07 - Registrations Page
 
-- [ ] Create page state for filters, paging, data, summary, loading, and error.
-- [ ] Fetch summary and registrations.
-- [ ] Prevent stale async responses.
-- [ ] Wire filter, clear, paging, and retry callbacks.
+- [x] Create page state for filters, paging, data, summary, loading, and error.
+- [x] Fetch summary and registrations.
+- [x] Prevent stale async responses.
+- [x] Wire filter, clear, paging, and retry callbacks.
 
 ## T08 - Filters
 
-- [ ] Create `RegistrationFilters.jsx`.
-- [ ] Add participant-name search.
-- [ ] Add type and status selects.
-- [ ] Add Clear filters.
-- [ ] Reset the page to 1 on filter changes.
+- [x] Create `RegistrationFilters.jsx`.
+- [x] Add participant-name search.
+- [x] Add type and status selects.
+- [x] Add Clear filters.
+- [x] Reset the page to 1 on filter changes.
 
 ## T09 - Pagination
 
-- [ ] Create `Pagination.jsx`.
-- [ ] Add Prev, Next, and numbered pages.
-- [ ] Highlight the current page.
-- [ ] Show the `Showing x-y of N` summary.
-- [ ] Add the page-size selector.
-- [ ] Disable unavailable controls.
+- [x] Create `Pagination.jsx`.
+- [x] Add Prev, Next, and numbered pages.
+- [x] Highlight the current page.
+- [x] Show the `Showing x-y of N` summary.
+- [x] Use a fixed page size of 10.
+- [x] Disable unavailable controls.
 
 ## T10 - Loading, Empty, and Error States
 
-- [ ] Add loading feedback.
-- [ ] Add empty-results feedback.
-- [ ] Add API-error feedback with Try again.
-- [ ] Verify error, loading, empty, and table priority.
+- [x] Add loading feedback.
+- [x] Add empty-results feedback.
+- [x] Add API-error feedback with Try again.
+- [x] Verify error, loading, empty, and table priority.
 
 ## T11 - Polish and UX Audit
 
-- [ ] Audit palette, spacing, and typography.
-- [ ] Add visible labels and action-word buttons.
-- [ ] Add hover and keyboard focus styles.
-- [ ] Verify responsive tablet behavior.
-- [ ] Ensure text accompanies status colors.
+- [x] Audit palette, spacing, and typography.
+- [x] Add visible labels and action-word buttons.
+- [x] Add hover and keyboard focus styles.
+- [x] Verify responsive tablet behavior.
+- [x] Ensure text accompanies status colors.
 
 ## T12 - Verification and Frontend README
 
-- [ ] Create `docs/specs/04-verification.md`.
-- [ ] Record sample-data verification results.
-- [ ] Create `frontend/README.md`.
-- [ ] Document sample/real API switching.
-- [ ] Push `frontend/setup`.
+- [x] Create `docs/specs/04-verification.md`.
+- [x] Record sample-data verification results.
+- [x] Create `frontend/README.md`.
+- [x] Document sample/real API switching.
+- [x] Push `frontend/setup`.
 
-## T13 - Connect the Real API (Later)
+## T13 - Connect the Real API
 
-- [ ] Obtain a working C# API.
-- [ ] Add the backend project if the instructor provides one.
-- [ ] Set the real API URL.
-- [ ] Switch `VITE_USE_SAMPLE_DATA=false`.
-- [ ] Verify KPIs, table, filters, and paging against API responses.
+- [x] Obtain a working C# API.
+- [x] Run the instructor’s standalone API bundle locally and document startup.
+- [x] Set the real API URL.
+- [x] Switch `VITE_USE_SAMPLE_DATA=false`.
+- [x] Verify KPIs, table, filters, and paging against API responses.
 
-## T14 - API Verification (Later)
+## T14 - API Verification
 
-- [ ] Fill in API verification results in `04-verification.md`.
-- [ ] Test loading, empty, error, filters, paging, and Network behavior.
-- [ ] Commit and push the API integration work on `frontend/setup`.
+- [x] Fill in API verification results in `04-verification.md`.
+- [x] Test loading, empty, error, filters, paging, and Network behavior.
+- [x] Commit and push the API integration work on `frontend/setup`.
+
+## Phase 5 - Submission Screenshots
+
+- [x] Collect the 12 screenshots listed in the SDD guide, including the `frontend/setup` commit history.
+- [x] Track the PNGs in the `Add required screenshots` commit.
+- [ ] Push the amended `frontend/setup` commit.
+- [ ] Confirm whether the submission needs supplementary evidence for #2 (address bar), #9 (JSON response), or #10 (history on `main`).
 
 ## T15 - Google Doc
 
 - [ ] Create the Google Doc with cover and table of contents.
 - [ ] Add all screenshot entries and explanations.
 - [ ] Add five own-written reflection answers.
-- [ ] Share with `vhinle@gmail.com` and set viewer access.
+- [ ] Share with `vhinle@gmail.com` as Commenter and set Anyone with the link to Viewer.
 - [ ] Verify access in incognito mode.
 
 ## T16 - Final Merge and Submission

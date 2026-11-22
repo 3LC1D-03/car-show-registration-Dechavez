@@ -4,10 +4,10 @@ import { formatDate, formatPeso } from "../utils/formatters.js";
 
 export default function RegistrationTable({ items }) {
   return (
-    <div className="overflow-x-auto" role="region" aria-label="Registrations table" tabIndex={0}>
-      <table className="min-w-full divide-y divide-slate-200 text-left text-sm">
+    <div className="overflow-x-auto border-t border-line focus-visible:-outline-offset-2" role="region" aria-label="Registrations table" tabIndex={0}>
+      <table className="min-w-full divide-y divide-line text-left text-sm">
         <caption className="sr-only">Car show registrations</caption>
-        <thead className="bg-slate-50 text-xs uppercase tracking-wide text-slate-600">
+        <thead className="bg-surface text-xs tracking-wide text-muted uppercase">
           <tr>
             <th scope="col" className="px-4 py-3">Reg. No.</th>
             <th scope="col" className="px-4 py-3">Date</th>
@@ -19,33 +19,34 @@ export default function RegistrationTable({ items }) {
             <th scope="col" className="px-4 py-3">Payment</th>
           </tr>
         </thead>
-        <tbody className="divide-y divide-slate-200 bg-white">
+        <tbody className="divide-y divide-line">
           {items.map((registration) => (
-            <tr key={registration.id} className="hover:bg-slate-50">
-              <td className="whitespace-nowrap px-4 py-3 font-medium text-slate-900">
+            <tr key={registration.id} className="hover:bg-surface">
+              <td className="whitespace-nowrap px-4 py-3 font-semibold">
                 {registration.registrationNumber}
               </td>
-              <td className="whitespace-nowrap px-4 py-3 text-slate-700">
+              <td className="whitespace-nowrap px-4 py-3 text-muted">
                 {formatDate(registration.registrationDate)}
               </td>
               <td className="px-4 py-3">
-                <div className="font-medium text-slate-900">{registration.participantName}</div>
-                <div className="text-xs text-slate-500">
+                <div className="font-semibold">{registration.participantName}</div>
+                <div className="mt-0.5 text-xs text-muted">
                   {registration.contactNumber || registration.email || "No contact information"}
                 </div>
               </td>
               <td className="px-4 py-3">
-                <div className="font-medium text-slate-900">{registration.carMakeModel}</div>
-                <div className="text-xs text-slate-500">{registration.plateNumber}</div>
+                <div className="font-semibold">{registration.carMakeModel}</div>
+                <div className="mt-0.5 text-xs text-muted">{registration.plateNumber}</div>
               </td>
-              <td className="whitespace-nowrap px-4 py-3 text-slate-700">
+              <td className="whitespace-nowrap px-4 py-3 text-muted">
                 {registration.registrationType}
               </td>
               <td className="whitespace-nowrap px-4 py-3">
                 <StatusBadge status={registration.status} />
               </td>
-              <td className="whitespace-nowrap px-4 py-3 text-right tabular-nums text-slate-700">
-                {formatPeso(registration.registrationFee)} / {formatPeso(registration.amountPaid)}
+              <td className="whitespace-nowrap px-4 py-3 text-right tabular-nums">
+                <span className="text-muted">{formatPeso(registration.registrationFee)} / </span>
+                <span className="font-semibold">{formatPeso(registration.amountPaid)}</span>
               </td>
               <td className="whitespace-nowrap px-4 py-3">
                 <PaymentBadge status={registration.paymentStatus} />

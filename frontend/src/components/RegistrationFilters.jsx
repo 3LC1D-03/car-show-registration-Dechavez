@@ -1,9 +1,9 @@
-const controlClass = "w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-slate-900";
+const controlClass = "min-h-11 w-full rounded-md border border-control bg-asphalt px-3 text-sm text-silver placeholder:text-muted hover:border-muted";
 
 export default function RegistrationFilters({ filters, onChange, onClear }) {
   return (
-    <div className="grid gap-4 p-4 sm:grid-cols-2 lg:grid-cols-[2fr_1fr_1fr_auto] lg:items-end">
-      <label className="flex flex-col gap-1 text-sm font-medium">
+    <div className="grid gap-3 p-4 text-muted sm:grid-cols-2 sm:px-6 lg:grid-cols-[minmax(0,2fr)_minmax(0,1fr)_minmax(0,1fr)_auto] lg:items-end">
+      <label className="flex min-w-0 flex-col gap-2 text-xs font-semibold">
         Participant name
         <input
           className={controlClass}
@@ -13,7 +13,7 @@ export default function RegistrationFilters({ filters, onChange, onClear }) {
           onChange={(event) => onChange({ participantName: event.target.value })}
         />
       </label>
-      <label className="flex flex-col gap-1 text-sm font-medium">
+      <label className="flex min-w-0 flex-col gap-2 text-xs font-semibold">
         Type
         <select
           className={controlClass}
@@ -26,7 +26,7 @@ export default function RegistrationFilters({ filters, onChange, onClear }) {
           <option>VIP</option>
         </select>
       </label>
-      <label className="flex flex-col gap-1 text-sm font-medium">
+      <label className="flex min-w-0 flex-col gap-2 text-xs font-semibold">
         Status
         <select
           className={controlClass}
@@ -40,7 +40,7 @@ export default function RegistrationFilters({ filters, onChange, onClear }) {
           <option>Cancelled</option>
         </select>
       </label>
-      <button type="button" className="justify-self-start rounded-md border border-slate-300 px-3 py-2 text-sm font-medium hover:bg-slate-50" onClick={onClear}>
+      <button type="button" className="min-h-11 justify-self-start rounded-md border border-control px-4 text-sm font-semibold text-silver hover:border-muted hover:bg-surface sm:self-end" onClick={onClear}>
         Clear filters
       </button>
     </div>

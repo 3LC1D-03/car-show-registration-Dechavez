@@ -19,20 +19,15 @@ export default function KpiCards({ summary }) {
     totalFees === 0 ? "0.0%" : `${((totalPayments / totalFees) * 100).toFixed(1)}%`;
 
   return (
-    <dl className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-4">
-      <KpiCard label="Total Registrations" value={totalRegistrations} icon="📋" tone="indigo" />
-      <KpiCard label="Total Payments" value={formatPeso(totalPayments)} icon="💰" tone="green" />
-      <KpiCard
-        label="Uncollected Payments"
-        value={formatPeso(uncollectedPayments)}
-        icon="💸"
-        tone="red"
-      />
-      <KpiCard label="Confirmed" value={confirmed} icon="✅" tone="green" />
-      <KpiCard label="Checked In" value={checkedIn} icon="🏁" tone="blue" />
-      <KpiCard label="Pending" value={pending} icon="⏳" tone="amber" />
-      <KpiCard label="Cancelled" value={cancelled} icon="🚫" tone="red" />
-      <KpiCard label="Collection Rate" value={collectionRate} icon="📊" tone="slate" />
+    <dl className="grid grid-cols-2 gap-2.5 sm:gap-3 md:grid-cols-4">
+      <KpiCard label="Total Registrations" value={totalRegistrations} icon="№" tone="featured" />
+      <KpiCard label="Total Payments" value={formatPeso(totalPayments)} icon="₱" />
+      <KpiCard label="Uncollected Payments" value={formatPeso(uncollectedPayments)} icon="−" />
+      <KpiCard label="Collection Rate" value={collectionRate} icon="%" />
+      <KpiCard label="Confirmed" value={confirmed} icon="✓" />
+      <KpiCard label="Checked In" value={checkedIn} icon="↳" />
+      <KpiCard label="Pending" value={pending} icon="…" />
+      <KpiCard label="Cancelled" value={cancelled} icon="×" />
     </dl>
   );
 }

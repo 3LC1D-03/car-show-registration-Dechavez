@@ -23,14 +23,14 @@
 - FR-F2: Type filter for All, Exhibitor, Competitor, or VIP and sent as `type`.
 - FR-F3: Status filter for All, Pending, Confirmed, CheckedIn, or Cancelled and sent as `status`.
 - FR-F4: Clear filters resets the search, type, status, and page.
-- FR-F5: Every filter or page-size change returns to page 1.
+- FR-F5: Every filter change returns to page 1.
 - FR-F6: An All option has value `""` and is omitted from query parameters.
 
 ## 4. Paging
 
 - FR-P1: Prev, Next, and numbered page buttons; highlight the current page.
 - FR-P2: Show `Showing x-y of N`.
-- FR-P3: Page-size selector offers 5, 10, and 20 rows and returns to page 1.
+- FR-P3: Display 10 rows per page.
 - FR-P4: Disable buttons while loading and disable Prev on page 1 and Next on the last page.
 
 ## 5. States
@@ -100,7 +100,7 @@ Errors use ASP.NET ProblemDetails. A 400 response may contain `errors: { Field: 
 ## 8. UX Principles
 
 - Visual hierarchy: KPIs, filters, table, then pagination.
-- Use a consistent slate-neutral and indigo-primary palette, one font, and consistent spacing.
+- Use black and graphite surfaces, silver text, and yellow accents for primary actions, with one font and consistent spacing.
 - Label controls and use action-word button labels.
 - Provide hover, keyboard focus, active, and disabled feedback.
 - Right-align amounts and format pesos and dates consistently.

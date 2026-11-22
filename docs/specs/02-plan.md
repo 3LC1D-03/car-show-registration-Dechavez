@@ -7,7 +7,7 @@ State owned by `src/pages/RegistrationsPage.jsx`:
 | State | Purpose |
 |---|---|
 | `filters` | Share participant name, type, and status with filters and the fetch effect |
-| `page`, `pageSize` | Share pagination with the fetch effect |
+| `page` | Share pagination with the fetch effect, using a fixed page size of 10 |
 | `data` | Supply table rows and pagination totals |
 | `summary` | Supply KPI values |
 | `loading`, `error` | Control loading, error, empty, and table states |
@@ -41,7 +41,7 @@ Child components receive props and callbacks only.
 
 ## Styling
 
-- Palette: slate for neutral UI and indigo for primary actions.
-- Status colors: red, amber, green, blue, and slate as appropriate.
+- Palette: black and graphite surfaces, silver text, and yellow accents for primary actions and focus.
+- Status colors: yellow, green, blue, and red, paired with visible text labels.
 - Font: Tailwind default sans-serif.
 - Spacing: primarily Tailwind `p-4`, `p-6`, and `gap-4`.

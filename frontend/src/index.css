@@ -1,11 +1,57 @@
 @import "tailwindcss";
 
+@theme {
+  --color-asphalt: #0c0c0d;
+  --color-panel: #151517;
+  --color-surface: #1e1e21;
+  --color-line: #303034;
+  --color-control: #68686f;
+  --color-silver: #f1f1f2;
+  --color-muted: #b4b4ba;
+  --color-signal: #f6d638;
+  --color-signal-hover: #ffe674;
+}
+
 @layer base {
+  :root {
+    color-scheme: dark;
+    background: var(--color-asphalt);
+    color: var(--color-silver);
+  }
+
   :where(button, input, select, [tabindex="0"]):focus-visible {
-    @apply outline-2 outline-offset-2 outline-indigo-600;
+    @apply outline-2 outline-offset-2 outline-signal;
+  }
+
+  button:enabled {
+    cursor: pointer;
   }
 
   button:enabled:active {
-    @apply brightness-95;
+    @apply brightness-90;
   }
+}
+
+.show-header {
+  background-color: var(--color-panel);
+  background-image: linear-gradient(90deg, #111113 0 36%, #11111345 58%, transparent 76%),
+    url("/carshow-hero.jpg");
+  background-repeat: no-repeat;
+  background-size: 100% 100%, auto 190%;
+  background-position: center, right 58%;
+}
+
+@media (width < 40rem) {
+  .show-header {
+    background-image: linear-gradient(90deg, #111113f5, #1111139c 60%, #11111350),
+      url("/carshow-hero.jpg");
+    background-position: center, right -5rem bottom 51%;
+  }
+}
+
+.show-mark {
+  width: 1.25rem;
+  height: 0.7rem;
+  transform: skewX(-22deg);
+  background: repeating-linear-gradient(90deg, currentColor 0 4px, transparent 4px 7px);
 }

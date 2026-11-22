@@ -40,7 +40,7 @@ This guide turns the instructor's PDF into an **SDD workflow**: write down *what
 1. **KPI cards** (from `GET /api/registrations/summary`)
 2. **Filters** (name search, type, status, clear), sent to the API as query params
 3. **Registrations table**
-4. **Pagination** (prev/next, page numbers, "Showing x–y of N", page-size selector)
+4. **Pagination** (prev/next, page numbers, and "Showing x–y of N", with 10 rows per page)
 5. **Loading / empty / error states**
 6. **Sample data first**, then the real API (later)
 
@@ -299,7 +299,7 @@ Write these four files in `docs/specs/`.
 ## 4. Paging
 - FR-P1 Prev / Next and numbered page buttons; current page highlighted
 - FR-P2 Summary "Showing 1–10 of 25"
-- FR-P3 Page-size selector (5, 10, 20); changing it goes to page 1
+- FR-P3 Display 10 rows per page
 - FR-P4 Buttons disabled while loading and at first/last page
 
 ## 5. States
@@ -342,7 +342,7 @@ New Registration form (POST, 400/409 errors), details modal (GET /{id}), skeleto
 | State | Why here |
 |---|---|
 | filters {participantName, type, status} | Shared by Filters (inputs) and the fetch effect |
-| page, pageSize | Shared by Pagination and the fetch effect |
+| page | Shared by Pagination and the fetch effect, with a fixed page size of 10 |
 | data {items, totalCount, totalPages, ...} | Shared by Table and Pagination |
 | summary | Used by KpiCards |
 | loading, error | Shared by Table/Pagination/messages |
@@ -357,7 +357,7 @@ src/api/index.js picks sample-data.js or registrationsApi.js using VITE_USE_SAMP
 Both export getRegistrations(params) and getSummary().
 
 ## Styling
-Palette: slate (neutral) + indigo (primary). Status colors: red/amber/green (+ blue/slate).
+Palette: black and graphite surfaces, silver text, and yellow accents. Status colors are paired with text.
 One font (Tailwind default sans). Spacing: p-4/p-6, gap-4.
 ```
 
@@ -365,10 +365,10 @@ One font (Tailwind default sans). Spacing: p-4/p-6, gap-4.
 Paste the task list (T01–T16 below) as a checklist and tick it off as you go.
 
 ### 🛑 CHECKPOINT 2
-- [ ] Spec files committed: **Commit:** `Add SDD constitution, spec, plan and task list`
-- [ ] `git push`
-- [ ] Stay on `frontend/setup`; do not create or merge another branch
-- [ ] Continue to Phase 3
+- [x] Spec files committed: **Commit:** `Add SDD constitution, spec, plan and task list`
+- [x] `git push`
+- [x] Stay on `frontend/setup`; do not create or merge another branch
+- [x] Continue to Phase 3
 
 ---
 
@@ -441,10 +441,10 @@ export async function getSummary() {
 ```
 
 ### 🛑 CHECKPOINT T01
-- [ ] Verify in the console: 25+ items, filters/paging math correct
-- [ ] Verify `git branch --show-current` shows `frontend/setup`
-- [ ] **Commit:** `Add sample registration data and local API functions`
-- [ ] Push the existing branch
+- [x] Verify in the console: 25+ items, filters/paging math correct
+- [x] Verify `git branch --show-current` shows `frontend/setup`
+- [x] **Commit:** `Add sample registration data and local API functions`
+- [x] Push the existing branch
 
 ---
 
@@ -483,8 +483,8 @@ export const { getRegistrations, getSummary } = useSample ? sample : real;
 All UI code imports from `src/api/index.js` only.
 
 ### 🛑 CHECKPOINT T02
-- [ ] **Commit:** `Add API module with sample/real data switch`
-- [ ] push
+- [x] API module and data switch shipped in `26c0534`.
+- [x] push
 
 ---
 
@@ -519,8 +519,8 @@ export default function useDebounce(value, delay = 400) {
 ```
 
 ### 🛑 CHECKPOINT T03
-- [ ] **Commit:** `Add currency/date formatters and useDebounce hook`
-- [ ] push
+- [x] **Commit:** `Added currency/date formatters and useDebounce hook`
+- [x] push
 
 ---
 
@@ -534,10 +534,10 @@ export default function useDebounce(value, delay = 400) {
 - Values come **only** from `summary`
 
 ### 🛑 CHECKPOINT T04
-- [ ] Numbers match what `getSummary()` returns
-- [ ] **Commit:** `Add KPI cards from summary data`
-- [ ] Push `frontend/setup`
-- [ ] 📸 **DRAFT:** KPI row
+- [x] Numbers match what `getSummary()` returns
+- [x] **Commit:** `Add KPI cards from the summary data`
+- [x] Push `frontend/setup`
+- [x] KPI row captured in screenshot #2
 
 ---
 
@@ -550,8 +550,8 @@ export default function useDebounce(value, delay = 400) {
 - Always show text; keep contrast readable (e.g. `bg-red-100 text-red-800`); unknown value → neutral gray fallback
 
 ### 🛑 CHECKPOINT T05
-- [ ] Verify `git branch --show-current` shows `frontend/setup`
-- [ ] **Commit:** `Add StatusBadge and PaymentBadge components`
+- [x] Verify `git branch --show-current` shows `frontend/setup`
+- [x] **Commit:** `Add StatusBadge and PaymentBadge components`
 
 ---
 
@@ -564,9 +564,9 @@ Columns: Reg. No. · Date · Participant (name + contact/email in `text-xs text-
 - `hover:bg-slate-50` on rows; `key={r.id}`; `formatPeso(fee) / formatPeso(paid)`
 
 ### 🛑 CHECKPOINT T06
-- [ ] **Commit:** `Add registrations table with status and payment badges`
-- [ ] push
-- [ ] 📸 **DRAFT:** table
+- [x] **Commit:** `Add registrations table with status and payment badges`
+- [x] Push `frontend/setup`
+- [x] Table captured in screenshot #2
 
 ---
 
@@ -582,7 +582,6 @@ import useDebounce from "../hooks/useDebounce";
 export default function RegistrationsPage() {
   const [filters, setFilters] = useState({ participantName: "", type: "", status: "" });
   const [page, setPage] = useState(1);
-  const [pageSize, setPageSize] = useState(10);
   const [data, setData] = useState(null);
   const [summary, setSummary] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -598,16 +597,15 @@ export default function RegistrationsPage() {
   useEffect(() => {
     let ignore = false; // prevents stale responses from overwriting newer ones
     setLoading(true); setError(null);
-    getRegistrations({ participantName: debouncedName, type: filters.type, status: filters.status, page, pageSize })
+    getRegistrations({ participantName: debouncedName, type: filters.type, status: filters.status, page, pageSize: 10 })
       .then((res) => { if (!ignore) setData(res); })
       .catch((e) => { if (!ignore) setError(e); })
       .finally(() => { if (!ignore) setLoading(false); });
     return () => { ignore = true; };
-  }, [debouncedName, filters.type, filters.status, page, pageSize, reloadKey]);
+  }, [debouncedName, filters.type, filters.status, page, reloadKey]);
 
   const changeFilter = (patch) => { setFilters((f) => ({ ...f, ...patch })); setPage(1); };      // FR-F5
   const clearFilters = () => { setFilters({ participantName: "", type: "", status: "" }); setPage(1); };
-  const changePageSize = (n) => { setPageSize(n); setPage(1); };                                // FR-P3
   const retry = () => setReloadKey((k) => k + 1);
 
   // layout: header -> KpiCards -> card with Filters + (states | Table) + Pagination
@@ -615,9 +613,9 @@ export default function RegistrationsPage() {
 ```
 
 ### 🛑 CHECKPOINT T07
-- [ ] KPI + table render from sample data
-- [ ] **Commit:** `Add RegistrationsPage with data fetching and state`
-- [ ] push
+- [x] KPI + table render from sample data
+- [x] **Commit:** `Add RegistrationsPage with data fetching and state`
+- [x] Push `frontend/setup`
 
 ---
 
@@ -633,26 +631,26 @@ export default function RegistrationsPage() {
 **Verify:** typing triggers one fetch ~400 ms after you stop; changing type/status returns to page 1; Clear resets all.
 
 ### 🛑 CHECKPOINT T08
-- [ ] **Commit:** `Add participant name search and type/status filters`
-- [ ] Push `frontend/setup`
-- [ ] 📸 **DRAFT:** search result, type filter, status filter
+- [x] **Commit:** `Add participant name search and type/status filters`
+- [x] Push `frontend/setup`
+- [x] Search, type, and status captured in screenshots #4, #5a, and #5b
 
 ---
 
 ## T09 — Pagination (FR-P1–P4)
 
-**File:** `Pagination.jsx` (props: `page`, `pageSize`, `totalCount`, `totalPages`, `loading`, `onPageChange`, `onPageSizeChange`)
+**File:** `Pagination.jsx` (props: `page`, `pageSize`, `totalCount`, `totalPages`, `loading`, `onPageChange`)
 
 - Prev / numbered buttons / Next; **current page highlighted** (`aria-current="page"`)
 - Clear disabled styling; disabled while `loading`, Prev at page 1, Next at the last page
 - Summary: `Showing {from}–{to} of {totalCount}` with `from = (page-1)*pageSize + 1`, `to = Math.min(page*pageSize, totalCount)`; if `totalCount === 0` show "Showing 0 of 0"
-- Page-size `<select>` (5, 10, 20) with label "Per page"
+- The dashboard requests 10 rows per page.
 
 ### 🛑 CHECKPOINT T09
-- [ ] Verify `git branch --show-current` shows `frontend/setup`
-- [ ] **Commit:** `Add pagination and page-size selector`
-- [ ] push
-- [ ] 📸 **DRAFT:** page 2 with "Showing 11–20 of 25"
+- [x] Verify `git branch --show-current` shows `frontend/setup`
+- [x] Initial pagination shipped in `2585bbc`.
+- [x] Push `frontend/setup`
+- [x] Page 2 captured in screenshot #6 with “Showing 11–20 of 25”
 
 ---
 
@@ -665,24 +663,24 @@ export default function RegistrationsPage() {
 - Test error in sample mode by temporarily making `getRegistrations` throw
 
 ### 🛑 CHECKPOINT T10
-- [ ] **Commit:** `Add loading, empty and error states`
-- [ ] push
-- [ ] 📸 **DRAFT:** all three states
+- [x] **Commit:** `Add loading, empty and error states`
+- [x] Push `frontend/setup`
+- [x] Loading, empty, and error states captured in screenshots #3, #7, and #8
 
 ---
 
 ## T11 — Polish & UX audit (Spec §8)
 
-- [ ] Consistent palette/font/spacing
-- [ ] Labels/placeholders on all inputs; action-word buttons
-- [ ] Hover + focus-visible styles
-- [ ] Amounts right-aligned; ₱ and dates formatted the same everywhere
-- [ ] Tablet width: cards wrap, table scrolls horizontally
-- [ ] Color never the only cue
+- [x] Consistent palette/font/spacing
+- [x] Labels/placeholders on all inputs and action-word buttons
+- [x] Hover and focus-visible styles
+- [x] Amounts right-aligned with consistent peso and date formatting
+- [x] Cards wrap and the table scrolls horizontally at tablet width
+- [x] Status and payment badges include text
 
 ### 🛑 CHECKPOINT T11
-- [ ] **Commit:** `Polish responsive layout and accessibility styles`
-- [ ] push
+- [x] **Commit:** `Polish responsive layout and accessibility styles`
+- [x] Push `frontend/setup`
 
 ---
 
@@ -716,32 +714,25 @@ The UI is complete against sample data. The C# API will be connected soon.
 ```
 
 ### 🛑 CHECKPOINT T12
-- [ ] **Commit:** `Add frontend README and sample-data verification checklist`
-- [ ] Push `frontend/setup`
-- [ ] The branch now contains a complete, working sample-data dashboard (a safe fallback if the API is late)
+- [x] **Commit:** `Add frontend README and sample-data verification checklist`
+- [x] Push `frontend/setup`
+- [x] Sample-data mode verified before switching to the live API
 
 ---
 
-# PHASE 4 — ⏳ Connect the real C# API (LATER)
+# PHASE 4 — Connect the real C# API
 
-Do this once a backend exists. Ways to get one (**ask your instructor**):
-- **Option A:** the **C# template from the LMS**; extract it into `backend/` and run it
-- **Option B:** a backend you or someone else builds later
+This project uses the instructor-provided Windows standalone C# API. The bundle runs locally from `backend/`. Follow the [backend startup instructions](../../backend/README.md).
 
 ### T13 — Switch to the real API
 
 Remain on `frontend/setup`. Do not create a new branch.
-1. Add the C# project to `backend/` (replace the placeholder README) and commit it if it's yours to commit.
-2. Run it:
-   ```bash
-   cd backend
-   dotnet run --project Api
-   ```
-   Note the printed URL (`Now listening on: http://localhost:XXXX`) or check `launchSettings.json`.
+1. Extract the instructor's bundle into `backend/` using its original folder structure.
+2. Run `start-api.cmd` from the bundle and wait for `Now listening on: http://localhost:5205`.
 3. Confirm in Scalar/browser that `GET <base>/api/registrations/summary` works and the database holds ≥ 25 registrations (ideally the same distribution as your sample data so numbers are easy to compare).
 4. Update `frontend/.env.development`:
    ```
-   VITE_API_BASE_URL=http://localhost:<real port>
+   VITE_API_BASE_URL=http://localhost:5205
    VITE_USE_SAMPLE_DATA=false
    ```
 5. Restart `npm run dev`.
@@ -771,62 +762,62 @@ app.UseCors("Frontend");
 > Don't rename fields in your code. If the contract and the real API differ, fix the **API** or add a mapping in `registrationsApi.js`, and note it in `01-spec.md`.
 
 ### 🛑 CHECKPOINT T13
-- [ ] KPI values **match** the API summary JSON
-- [ ] Table, filters, and paging counts match the API
-- [ ] **Commit:** `Connect dashboard to the C# API`
-- [ ] push
+- [x] KPI values match the API summary JSON
+- [x] Table, filters, and paging counts match the API
+- [x] **Commit:** `Connect dashboard to the C# API`
+- [x] Push `frontend/setup`
 
 ### T14 — Verify against the spec (with the real API)
 
-Update `docs/specs/04-verification.md`:
+See [sample and live verification results](04-verification.md).
 
 | Spec ID | Test | Sample ✔ | API ✔ |
 |---|---|---|---|
-| FR-K1/K3 | KPI numbers equal `/summary` JSON | ☐ | ☐ |
-| FR-T1–T8 | Every column shown, formats correct | ☐ | ☐ |
-| FR-F1 | One request ~400 ms after the last keystroke (Network tab) | ☐ | ☐ |
-| FR-F2/F3 | Type/Status filters send correct query params | ☐ | ☐ |
-| FR-F5 | Changing a filter from page 3 returns to page 1 | ☐ | ☐ |
-| FR-F4 | Clear resets all | ☐ | ☐ |
-| FR-P1–P4 | Page buttons, summary, page size, disabled states | ☐ | ☐ |
-| FR-S1 | Loading visible (DevTools → Network → throttle "Slow 4G") | ☐ | ☐ |
-| FR-S2 | Empty state with nonsense search ("zzzz") | ☐ | ☐ |
-| FR-S3 | Error state with API stopped; Try again works after restart | ☐ | ☐ |
-| §8 | Tablet width OK | ☐ | ☐ |
+| FR-K1/K3 | KPI numbers equal `/summary` JSON | ☑ | ☑ |
+| FR-T1–T8 | Every column shown, formats correct | ☑ | ☑ |
+| FR-F1 | One request about 400 ms after the last keystroke | ☑ | ☑ |
+| FR-F2/F3 | Type and status filters pass the correct values | ☑ | ☑ |
+| FR-F5 | Changing a filter from page 3 returns to page 1 | ☑ | ☑ |
+| FR-F4 | Clear resets all | ☑ | ☑ |
+| FR-P1–P4 | Page buttons, summary, 10 rows per page, and disabled states | ☑ | ☑ |
+| FR-S1 | Loading state is visible | ☑ | ☑ |
+| FR-S2 | Empty state with a search for “zzzz” | ☑ | ☑ |
+| FR-S3 | Error appears on failure and Try again recovers | ☑ | ☑ |
+| §8 | Tablet layout | ☑ | ☑ |
 
 ### 🛑 CHECKPOINT T14
-- [ ] **Commit:** `Verify dashboard against spec with real API`
-- [ ] Push `frontend/setup`
+- [x] **Commit:** `Verify dashboard against spec with real API`
+- [x] Push `frontend/setup`
 
 ---
 
-# PHASE 5 — FINAL screenshots
+# PHASE 5 — Submission screenshots
 
-> Don't crop out URLs/status codes, don't edit images, don't reuse anyone else's. Save each in `docs/screenshots/` with the names below **and** paste into the Google Doc.
+Use the filenames below from `docs/screenshots/` in the Google Doc. Keep the address bar, request URL, and status code visible where they are part of the evidence.
 
-**Timing:** items marked ⏳ need the real API. You may capture sample-data versions of the others now as backups, but the graded set should come from your app running with the real API.
+| # | File | What the capture shows |
+|---|---|---|
+| 1 | [frontend_src folder structure.png](<../screenshots/frontend_src folder structure.png>) | VS Code Explorer with the React source folders and entry files. |
+| 2 | [Full dashboard.png](<../screenshots/Full dashboard.png>) | Live C# totals, ten registration rows, and page 1 of the dashboard. |
+| 3 | [Loading state.png](<../screenshots/Loading state.png>) | The loading message and disabled navigation during a participant search. |
+| 4 | [Search by participant name.png](<../screenshots/Search by participant name.png>) | Searching for Patricia returns one matching registration. |
+| 5a | [Filtered by type.png](<../screenshots/Filtered by type.png>) | The Competitor selection and matching rows. |
+| 5b | [Filtered by status.png](<../screenshots/Filtered by status.png>) | The Cancelled selection and three matching rows. |
+| 6 | [Paging.png](../screenshots/Paging.png) | Page 2 selected and “Showing 11–20 of 25”. |
+| 7 | [Empty state.png](<../screenshots/Empty state.png>) | A search combined with filters returns zero rows and offers Clear filters. |
+| 8 | [Error state.png](<../screenshots/Error state.png>) | The API connection error and Try again button. |
+| 9 | [Browser devtools.png](<../screenshots/Browser devtools.png>) | The live `GET /api/registrations?page=1&pageSize=10` request, `200 OK`, and the JSON content type in Headers. |
+| 10 | [github commit history.png](<../screenshots/github commit history.png>) | GitHub commit history on `frontend/setup` before the final merge. |
+| 11 | [Scalar API.png](<../screenshots/Scalar API.png>) | The React dashboard and the running Scalar API reference side by side. |
 
-| # | What to capture | How | File name | API needed? |
-|---|---|---|---|---|
-| 1 | `frontend/src` structure (components, pages, api) | VS Code explorer or `tree` | `01-frontend-src-structure.png` | No |
-| 2 | Full dashboard: KPI + table + pagination, **data from C# API** | Full browser window incl. address bar | `02-dashboard-full.png` | ⏳ Yes |
-| 3 | Loading state | DevTools → Network → throttle "Slow 4G", reload | `03-loading-state.png` | Backup now |
-| 4 | Search by participant name | Type a name | `04-search-filtered.png` | Backup now |
-| 5a | Filter by **type** | Choose a type | `05a-filter-type.png` | Backup now |
-| 5b | Filter by **status** | Choose a status | `05b-filter-status.png` | Backup now |
-| 6 | Paging page 2+ with "Showing x–y of N" | Click page 2 | `06-paging-page2.png` | Backup now |
-| 7 | Empty state | Search "zzzz" | `07-empty-state.png` | Backup now |
-| 8 | Error state (API stopped) | **Stop the API**, reload | `08-error-state.png` | ⏳ Yes |
-| 9 | DevTools → Network: `GET /api/registrations?...` + JSON response | F12 → Network → click request → show URL, status 200, Response | `09-devtools-network.png` | ⏳ Yes |
-| 10 | GitHub commit history with your commits | `github.com/<you>/<repo>/commits/main` | `10-github-commits.png` | No (take last) |
-| 11 | Full app running: API (Scalar/terminal) **and** React together | Split screen | `11-full-app-running.png` | ⏳ Yes |
+Some captures show the earlier **Per page** control. The submitted dashboard uses a fixed 10 rows per page. The current #2 capture shows the dashboard content. A full browser-window capture would add the address bar. Add the JSON body from DevTools → **Response** as companion evidence for #9 where the rubric requires it. If the instructor requires #10 on `main`, capture it after merging.
 
 For **each** screenshot, write in the Google Doc (3–5 sentences, your own words): what it shows, the request/action you performed, the result, and why it's correct per the requirements (cite spec IDs, e.g. "FR-F5: changing a filter returns to page 1…").
 
 ### 🛑 CHECKPOINT Phase 5
-- [ ] All 12 files in `docs/screenshots/`
-- [ ] **Commit:** `Add final screenshots`
-- [ ] Push `frontend/setup` (so the commit history screenshot #10 includes the completed work)
+- [x] All 12 supplied files in `docs/screenshots/`
+- [x] **Commit:** `Add required screenshots`
+- [ ] Push the amended `frontend/setup` commit
 
 ---
 
@@ -847,7 +838,7 @@ For **each** screenshot, write in the Google Doc (3–5 sentences, your own word
 
 | # | Question | Talking points from *your* project |
 |---|---|---|
-| 1 | Components & state | Which components you made; why `RegistrationsPage` owns `filters/page/pageSize/data/loading/error` (shared by siblings, single source of truth, children stay reusable); example: Pagination and Table both need `data` and `loading`. |
+| 1 | Components & state | Which components you made; why `RegistrationsPage` owns filters, the current page, and request results; example: Pagination and Table both use the registration response. |
 | 2 | Talking to the API | Keystroke → `changeFilter` sets name + page 1 → `useDebounce` waits 400 ms → effect fires → `getRegistrations` builds the query string → fetch → JSON → `setData` → table re-renders. Debounce avoids a request per keystroke, reduces server load/flicker/out-of-order responses. |
 | 3 | User experience | Staff need to know whether it's loading, broken, or just empty. Say which state was hardest and why (e.g. error + retry, or priority among states). |
 | 4 | Server vs browser | With 2,000 rows: huge payloads, slow render, memory; KPI totals wrong if computed from the current page (e.g. "Total Payments" of only 10 rows). Cite your `/summary` and `totalCount`. |
@@ -855,7 +846,7 @@ For **each** screenshot, write in the Google Doc (3–5 sentences, your own word
 
 ### 🛑 CHECKPOINT T15
 - [ ] Doc named and shared correctly; tested in incognito
-- [ ] 11 screenshot entries (with 5a/5b), each with title + image + 3–5 sentences
+- [ ] 12 screenshot files (including 5a and 5b), each with a title, image, and 3–5 sentences
 - [ ] 5 reflection answers, each ≥ 5 sentences with a project example
 
 ---
@@ -899,28 +890,28 @@ For **each** screenshot, write in the Google Doc (3–5 sentences, your own word
 
 **Repository**
 - [ ] Repo named per instructor's instruction (placeholder: `car-show-registration-<surname>`)
-- [ ] Layout: `backend/`, `frontend/`, `docs/screenshots/`, root `README.md`
-- [ ] ≥ 10 meaningful commits under your own account
-- [ ] All frontend work is completed on `frontend/setup`
+- [x] Layout: `backend/`, `frontend/`, `docs/screenshots/`, root `README.md`
+- [x] ≥ 10 commits under your own account
+- [x] Frontend implementation complete on `frontend/setup`
 - [ ] One final Pull Request merged `frontend/setup` into `main`
-- [ ] No `node_modules/` or `dist/`
-- [ ] `.env.development` has `VITE_API_BASE_URL` (and `VITE_USE_SAMPLE_DATA`)
-- [ ] Root README has your role; `frontend/README.md` explains the sample ↔ API switch
+- [x] Git excludes `node_modules/` and `dist/`
+- [x] `.env.development` has `VITE_API_BASE_URL` and `VITE_USE_SAMPLE_DATA`
+- [x] Root README lists the role and `frontend/README.md` explains the data-source switch
 - [ ] `main` runs (with the C# API connected, if available)
 
 **App**
-- [ ] 5+ KPI cards from `/summary`
-- [ ] Table with all required columns; badges with text; right-aligned amounts
-- [ ] Debounced name search, type, status, Clear; filter change → page 1
-- [ ] Pagination (prev/next/numbers/current highlighted/summary/page-size/disabled)
-- [ ] Loading, empty (+ Clear filters), error (+ Try again)
-- [ ] Sample data ≥ 25 records; switch works
-- [ ] Responsive (tablet)
+- [x] 5+ KPI cards from `/summary`
+- [x] Table with all required columns, badges with text, and right-aligned amounts
+- [x] Debounced name search, type, status, Clear filters, and page 1 on filter change
+- [x] Pagination with Prev, Next, numbered pages, active page, range summary, fixed 10 rows, and disabled controls
+- [x] Loading, empty with Clear filters, and error with Try again
+- [x] Sample data has at least 25 records and the switch works
+- [x] Responsive tablet layout
 
 **Documentation**
 - [ ] Google Doc: cover, TOC, H1/H2 structure, screenshots with explanations, 5 reflections
 - [ ] Sharing verified in incognito
-- [ ] Screenshots also in `docs/screenshots/` with matching names
+- [x] Supplied screenshots are in `docs/screenshots/` with the names listed in Phase 5
 - [ ] Doc link submitted in LMS
 
 ---
@@ -949,7 +940,7 @@ The existing `frontend/setup` branch and its first commit are preserved. The fol
 | 16 | Add frontend README and sample-data verification checklist | T12 |
 | 17 | Connect dashboard to the C# API | T13 ⏳ |
 | 18 | Verify dashboard against spec with real API | T14 ⏳ |
-| 19 | Add final screenshots | Phase 5 ⏳ |
+| 19 | Add required screenshots | Phase 5 |
 
 If the existing first commit and the Phase 1–12 commits account for at least 10 meaningful commits, that is sufficient even if the API is not available. Add commits only for real, completed work.
 
