@@ -1,17 +1,25 @@
 import { useEffect, useMemo, useState } from "react";
 import { getRegistrations, getSummary } from "../api/index.js";
 import KpiCards from "../components/KpiCards.jsx";
+import RegistrationFilters from "../components/RegistrationFilters.jsx";
 import RegistrationTable from "../components/RegistrationTable.jsx";
+import useDebounce from "../hooks/useDebounce.js";
 
 const emptyFilters = { participantName: "", type: "", status: "" };
 
 export default function RegistrationsPage() {
-  const [filters] = useState(emptyFilters);
-  const [page] = useState(1);
+  const [filters, setFilters] = useState(emptyFilters);
+  const [page, setPage] = useState(1);
   const [pageSize] = useState(10);
   const [summary, setSummary] = useState(null);
   const [result, setResult] = useState(null);
-  const request = useMemo(() => ({ ...filters, page, pageSize }), [filters, page, pageSize]);
+  const { participantName, type, status } = filters;
+  const debouncedName = useDebounce(participantName);
+  const searchPending = participantName !== debouncedName;
+  const request = useMemo(
+    () => ({ participantName: debouncedName, type, status, page, pageSize }),
+    [debouncedName, type, status, page, pageSize],
+  );
 
   useEffect(() => {
     let ignore = false;
@@ -25,6 +33,8 @@ export default function RegistrationsPage() {
   }, []);
 
   useEffect(() => {
+    if (searchPending) return;
+
     let ignore = false;
 
     getRegistrations(request).then(
@@ -33,9 +43,19 @@ export default function RegistrationsPage() {
     );
 
     return () => { ignore = true; };
-  }, [request]);
+  }, [request, searchPending]);
 
-  const data = result?.request === request ? result.data : null;
+  const data = !searchPending && result?.request === request ? result.data : null;
+
+  function changeFilter(patch) {
+    setFilters((current) => ({ ...current, ...patch }));
+    setPage(1);
+  }
+
+  function clearFilters() {
+    setFilters(emptyFilters);
+    setPage(1);
+  }
 
   return (
     <main className="min-h-screen bg-slate-100 text-slate-900">
@@ -43,6 +63,7 @@ export default function RegistrationsPage() {
         <h1 className="text-2xl font-bold">Car Show 2027 Registrations</h1>
         <KpiCards summary={summary} />
         <div className="rounded-lg border border-slate-200 bg-white">
+          <RegistrationFilters filters={filters} onChange={changeFilter} onClear={clearFilters} />
           {data && <RegistrationTable items={data.items} />}
         </div>
       </div>
