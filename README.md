@@ -4,7 +4,7 @@
 | --- | --- |
 | Frontend | Elcid Dechavez |
 
-Run the sample-data dashboard from the repository root:
+Start the [C# API](backend/README.md), then run the dashboard from the repository root:
 
 ```sh
 cd frontend
@@ -14,4 +14,4 @@ npm run dev
 
 Open the URL printed by Vite, usually `http://localhost:5173`.
 
-The C# backend is planned for a later checkpoint. See the [frontend README](frontend/README.md) for the data-source settings.
+See the [frontend README](frontend/README.md) for sample mode and build commands.

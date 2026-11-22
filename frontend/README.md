@@ -1,6 +1,8 @@
 # Car Show Registration Dashboard
 
-## Run with sample data
+## Run with the C# API
+
+Start the [standalone C# API](../backend/README.md) first.
 
 From the `frontend` directory:
 
@@ -9,18 +11,18 @@ npm install
 npm run dev
 ```
 
-Open `http://localhost:5173` or the URL Vite prints. The dashboard starts with 25 sample registrations.
+Open `http://localhost:5173` or the localhost URL Vite prints. The dashboard loads registrations from the C# API.
 
 ## Data source
 
 Set the following in `.env.development` for the dev server. If the file is missing, copy `.env.example` first.
 
 ```dotenv
-VITE_USE_SAMPLE_DATA=true
+VITE_USE_SAMPLE_DATA=false
 VITE_API_BASE_URL=http://localhost:5205
 ```
 
-Restart Vite after editing the environment file. Set `VITE_USE_SAMPLE_DATA=true` for sample data. When the C# API is available, start it, set `VITE_USE_SAMPLE_DATA=false`, and set `VITE_API_BASE_URL` to its base URL.
+For the local sample dataset, create `.env.development.local` with `VITE_USE_SAMPLE_DATA=true`. Set it to `false` or remove the override to return to the API. Restart Vite after changing environment settings.
 
 `src/api/index.js` selects the data source. Both sources expose `getRegistrations(params)` and `getSummary()`.
 
@@ -32,7 +34,7 @@ npm run build -- --mode development
 npm run preview
 ```
 
-The explicit development mode applies the sample-data environment above when building. See the [verification checklist](../docs/specs/04-verification.md) for the flows checked against sample data and the checks pending for the C# API.
+Development mode applies the same data-source settings to the build. Keep the API running when previewing a live build. See the [verification checklist](../docs/specs/04-verification.md) for the tested dashboard flows.
 
 ## Project structure
 
