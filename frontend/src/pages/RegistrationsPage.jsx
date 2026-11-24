@@ -7,12 +7,12 @@ import RegistrationTable from "../components/RegistrationTable.jsx";
 import useDebounce from "../hooks/useDebounce.js";
 
 const emptyFilters = { participantName: "", type: "", status: "" };
-const pageSize = 10;
 const actionClass = "mt-4 min-h-11 rounded-md bg-signal px-4 text-sm font-bold text-asphalt hover:bg-signal-hover";
 
 export default function RegistrationsPage() {
   const [filters, setFilters] = useState(emptyFilters);
   const [page, setPage] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
   const [summaryResult, setSummaryResult] = useState(null);
   const [result, setResult] = useState(null);
   const [reloadKey, setReloadKey] = useState(0);
@@ -21,7 +21,7 @@ export default function RegistrationsPage() {
   const searchPending = participantName !== debouncedName;
   const request = useMemo(
     () => ({ params: { participantName: debouncedName, type, status, page, pageSize }, reloadKey }),
-    [debouncedName, type, status, page, reloadKey],
+    [debouncedName, type, status, page, pageSize, reloadKey],
   );
 
   useEffect(() => {
@@ -61,6 +61,11 @@ export default function RegistrationsPage() {
 
   function clearFilters() {
     setFilters(emptyFilters);
+    setPage(1);
+  }
+
+  function changePageSize(size) {
+    setPageSize(size);
     setPage(1);
   }
 
@@ -116,6 +121,7 @@ export default function RegistrationsPage() {
               totalPages={data?.totalPages ?? result?.data?.totalPages ?? 0}
               loading={loading}
               onPageChange={setPage}
+              onPageSizeChange={changePageSize}
             />
           )}
         </section>

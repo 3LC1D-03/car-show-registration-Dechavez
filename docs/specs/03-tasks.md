@@ -87,7 +87,7 @@
 - [x] Add Prev, Next, and numbered pages.
 - [x] Highlight the current page.
 - [x] Show the `Showing x-y of N` summary.
-- [x] Use a fixed page size of 10.
+- [x] Add a page-size selector for 5, 10, and 20 rows.
 - [x] Disable unavailable controls.
 
 ## T10 - Loading, Empty, and Error States
@@ -131,24 +131,5 @@
 
 - [x] Collect the 12 screenshots listed in the SDD guide, including the `frontend/setup` commit history.
 - [x] Track the PNGs in the `Add required screenshots` commit.
-- [ ] Push the amended `frontend/setup` commit.
-- [ ] Confirm whether the submission needs supplementary evidence for #2 (address bar), #9 (JSON response), or #10 (history on `main`).
-
-## T15 - Google Doc
-
-- [ ] Create the Google Doc with cover and table of contents.
-- [ ] Add all screenshot entries and explanations.
-- [ ] Add five own-written reflection answers.
-- [ ] Share with `vhinle@gmail.com` as Commenter and set Anyone with the link to Viewer.
-- [ ] Verify access in incognito mode.
-
-## T16 - Final Merge and Submission
-
-- [ ] Review `git log --oneline`, `git shortlog -sn`, and `git diff main...frontend/setup`.
-- [ ] Push the completed `frontend/setup` branch.
-- [ ] Create one final PR from `frontend/setup` into `main`.
-- [ ] Review and self-review the final PR, then merge it into `main`.
-- [ ] Verify the merged app runs from `main`.
-- [ ] Verify repository history and ignored generated folders.
-- [ ] Verify all required screenshots and documentation.
-- [ ] Submit the Google Doc link in the LMS before November 25, 2026.
+- [x] Push the amended `frontend/setup` commit.
+- [x] Confirm whether the submission needs supplementary evidence for #2 (address bar), #9 (JSON response), or #10 (history on `main`).
